@@ -12,9 +12,9 @@ The system allows the user:
     -Retrieve purpose of an appointment
 """
 
-from modules.User import User
-from modules.AppointmentDiary import AppointmentDiary
-from util.DatabaseHandler import DatabaseHandler
+from data.User import User
+from data.AppointmentDiary import AppointmentDiary
+from utils.dbHandler import dbHandler
 
 # connect database
 import os
@@ -26,7 +26,7 @@ db_name = os.environ.get("DB_NAME")
 db_host = os.environ.get("DB_HOST")
 db_port = os.environ.get("DB_PORT")
 
-db_handler = DatabaseHandler(db_name, db_user, db_pass, db_host, db_port)
+db_handler = dbHandler(db_name, db_user, db_pass, db_host, db_port)
 
 def exit_program():
     print('\nGoodbye!\n')
