@@ -16,7 +16,7 @@ class EventApp:
         self.tk_message_box = messagebox
         self.ttk = ttk
         # Connecting to database
-        self.db_handler = DatabaseHandler('./db/appointments.db')
+        self.db_handler = DatabaseHandler('./db/events.db')
 
         # Initializing functions
         self.root.resizable(0, 0)

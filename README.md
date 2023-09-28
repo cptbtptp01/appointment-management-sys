@@ -1,5 +1,5 @@
 # Easy Scheduler
-[!Alt text](media/easy-scheduler.png)
+![alt text](/media/easy-scheduler.png)
 Easy Scheduler is a scheduler app with a user-friendly Graphical User Interface (GUI), built with **Python** and **Tkinter**. The app is designed to be simple and intuitive, with a clean and minimalistic interface. Users can effortlessly create, view, update, and delete events, making event management. The application is following the **CRUD** (Create, Read, Update, Delete) paradigm, using a SQLite database to enable persistent storage of appointments. Finally, the app is **executable** on Windows, Linux, and MacOS, making it cross-platform friendly.
 
 To learn more about the application [here](https://www.huiruyang.works/projects/curd-easy-scheduler)
