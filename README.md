@@ -1,4 +1,5 @@
-# Appointment Management System
+# Appointment Scheduler
+Easy Scheduler is a scheduler app with a user-friendly Graphical User Interface (GUI), built with **Python** and **Tkinter**. The app is designed to be simple and intuitive, with a clean and minimalistic interface. Users can effortlessly create, view, update, and delete appointments, making appointment management. The application is following the **CRUD** (Create, Read, Update, Delete) paradigm, using a SQLite database to enable persistent storage of appointments.
 
 ## Functionality
 1. Schedule appointment for a certain date, time interval (indicated by start time and end time), and purpose if no conflicts found.
@@ -175,17 +176,66 @@ For the appointment system, a single schema is good to go, which can hold both t
 __username__: defined as `VARCHAR(100)` and marked as `NOT NULL` to ensure each user has a valid username.*
 
 #### Create Appointment Table
-| appointment_id | user_id | date       | start_time | end_time | purpose |
+| id | username | date       | start_time | end_time | purpose |
 |----------------|---------|------------|------------|----------|---------|
 | 123..          | 123..   | YYYY-MM-DD | 9 AM       | 11 AM    | ...     |
 | 123..          | 345..   | YYYY-MM-DD | 10 AM      | 11 AM    | ...     |
 | 123..          | 456..   | YYYY-MM-DD | 9 AM       | 11 AM    | ...     |
 
-*__appointment_id__: a `SERIAL` type, serves as the primary key
-__user_id__: a foreign key referencing the "user_id" column in the "users" table
+*__id__: a `SERIAL` type, serves as the primary key
+__username__: text, represent username, and username need to be not null, unique
 __date__: represent the appointment's date
 __start_time__: represent the appointment's start time
 __end_time__: represent the appointment's end time
 __purpose__: represent the appointment's purpose*
 
-#### 
+# Create User Table > id + username + date + start_time + end_time + purpose
+# c.execute("""CREATE TABLE user (
+#             id INTEGER PRIMARY KEY AUTOINCREMENT,
+#             username TEXT NOT NULL UNIQUE,
+#             date TEXT NOT NULL,
+#             start_time TEXT NOT NULL,
+#             end_time TEXT NOT NULL,
+#             purpose TEXT
+# )
+# """)
+
+#### TODO GUI
+# entries
+username = tkinter.Entry(root, width=30)
+username.grid(row=0, column=1, padx=20)
+
+date = tkinter.Entry(root, width=30)
+date.grid(row=1, column=1, padx=20)
+
+start_time = tkinter.Entry(root, width=30)
+start_time.grid(row=2, column=1, padx=20)
+
+end_time = tkinter.Entry(root, width=30)
+end_time.grid(row=3, column=1, padx=20)
+
+purpose = tkinter.Entry(root, width=30)
+purpose.grid(row=4, column=1, padx=20)
+
+# labels
+username_label = tkinter.Label(root, text="Username")
+username_label.grid(row=0, column=0)
+
+date_label = tkinter.Label(root, text="Date")
+date_label.grid(row=1, column=0)
+
+start_time_label = tkinter.Label(root, text="Start Time")
+start_time_label.grid(row=2, column=0)
+
+end_time_label = tkinter.Label(root, text="End Time")
+end_time_label.grid(row=3, column=0)
+
+purpose_label = tkinter.Label(root, text="Purpose")
+purpose_label.grid(row=4, column=0)
+
+# schedule button
+# TODO the buttom will invoke backend function from data/AppointmentDiary.py schedule_appt()
+schedule_btn = tkinter.Button(root, text="Schedule", command=lambda: add_appointment()) 
+schedule_btn.grid(row=5, column=0, columnspan=2, pady=10, padx=10, ipadx=100)
+
+# loosely use of figma for UI design
