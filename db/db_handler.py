@@ -1,4 +1,3 @@
-from datetime import datetime
 import sqlite3
 
 class DatabaseHandler:
@@ -79,24 +78,21 @@ class DatabaseHandler:
         self.cursor.execute(query, tuple(values))
         data = self.cursor.fetchall()
         return data
-
-    def close(self) -> None:
-        """Close connection"""
-        self.cursor.close()
-        self.conn.close()
     
-    def is_valid_event(self, year: str, month: str, day: str, start_time: str, end_time: str, event_detail:str) -> bool:
-        """validate the input event
-        """
-        if not event_detail or not year or not month or not day or not start_time or not end_time:
-            return False
-        # format year month day start_time end_time into datetime object
-        start_datetime = datetime.strptime(f"{year}-{month}-{day} {start_time}", "%Y-%m-%d %I:%M %p")
-        end_datetime = datetime.strptime(f"{year}-{month}-{day} {end_time}", "%Y-%m-%d %I:%M %p")
-        if start_datetime > end_datetime:
-            return False
-        
-        # check time conflicts with existing events from db
+    def update_event(self, id: str, year: str, month: str, day: str, start_time: str, end_time: str, event_detail:str) -> None:
+        """Update event in database"""
+        self.cursor.execute("""SELECT * FROM appointments
+                            WHERE year = ? AND month = ? AND day = ? AND start_time <= ? AND end_time >= ? AND id != ?""",
+                            (year, month, day, start_time, end_time, id))
+        data = self.cursor.fetchall()
+        if data:
+            return
+        self.cursor.execute("""UPDATE appointments SET year = ?, month = ?, day = ?, start_time = ?, end_time = ?, event_detail = ?
+                            WHERE id = ?""", (year, month, day, start_time, end_time, event_detail, id))
+        self.conn.commit()
+    
+    def is_time_available(self, year: str, month: str, day: str, start_time: str, end_time: str) -> bool:
+        """Check if the given time is available"""
         self.cursor.execute("""SELECT * FROM appointments 
                             WHERE year = ? AND month = ? AND day = ? AND start_time <= ? AND end_time >= ?""",
                             (year, month, day, start_time, end_time))
@@ -104,3 +100,8 @@ class DatabaseHandler:
         if data:
             return False
         return True
+    
+    def close(self) -> None:
+        """Close connection"""
+        self.cursor.close()
+        self.conn.close()
