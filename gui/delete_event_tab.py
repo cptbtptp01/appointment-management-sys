@@ -7,10 +7,11 @@ from gui.custom_widgets import DateTimeDropdown, CustomButton, CustomLabel
 
 class DeleteEventTab:
     """This class is responsible for creating the "Delete Event" tab"""
-    def __init__(self, root, on_click_search, on_click_delete):
+    def __init__(self, root, on_click_search, on_click_delete, on_click_delete_all):
         self.root = root
         self.on_click_search = on_click_search
         self.on_click_delete = on_click_delete
+        self.on_click_delete_all = on_click_delete_all
         self.create_delete_event_tab()
     
     def create_delete_event_tab(self):
@@ -27,8 +28,10 @@ class DeleteEventTab:
 
         search_button = CustomButton(root1, "SEARCH", self.on_click_search)
         delete_button = CustomButton(root1, "DELETE", self.on_click_delete)
+        delete_all_button = CustomButton(root1, "DELETE ALL", self.on_click_delete_all)
         search_button.grid(column=0, row=4, pady=(10, 0), sticky="W")
         delete_button.grid(column=0, row=5, pady=(10, 0), sticky="W")
+        delete_all_button.grid(column=0, row=6, pady=(10, 0), sticky="W")
     
     def get_dropdown_values(self) -> list:
         """returns a list of values from the dropdowns

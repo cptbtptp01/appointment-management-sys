@@ -16,7 +16,7 @@ class EventApp:
         self.tk_message_box = messagebox
         self.ttk = ttk
         # Connecting to database
-        self.db_handler = DatabaseHandler('./db/events.db')
+        self.db_handler = DatabaseHandler('./db/scheduler.db')
 
         # Initializing functions
         self.root.resizable(0, 0)
@@ -25,7 +25,7 @@ class EventApp:
         # Create instances of other tabs as needed
         self.add_event_tab = AddEventTab(self.tab_add_event, self.on_click_create, self.on_click_all_event, self.on_click_update)
         self.retrieve_event_tab = RetrieveEventTab(self.tab_retrieve_event, self.on_click_search, self.on_click_update)
-        self.delete_event_tab = DeleteEventTab(self.tab_delete_event, self.on_click_search_in_delete, self.on_click_delete)
+        self.delete_event_tab = DeleteEventTab(self.tab_delete_event, self.on_click_search_in_delete, self.on_click_delete, self.on_click_delete_all)
 
     def on_click_create(self):
         """This function is called when the user clicks the "CREATE" button"""
@@ -47,8 +47,8 @@ class EventApp:
     def _is_validate_dropdown_values(self, dropdown_values: list) -> bool:
         if any(value == "" for value in dropdown_values):
             return False
-        start_time = datetime.strptime(f"{dropdown_values[1]}-{dropdown_values[2]}-{dropdown_values[3]} {dropdown_values[4]}", "%Y-%m-%d %I:%M %p")
-        end_time = datetime.strptime(f"{dropdown_values[1]}-{dropdown_values[2]}-{dropdown_values[3]} {dropdown_values[5]}", "%Y-%m-%d %I:%M %p")
+        start_time = datetime.strptime(f"{dropdown_values[0]}-{dropdown_values[1]}-{dropdown_values[2]} {dropdown_values[3]}", "%Y-%m-%d %I:%M %p")
+        end_time = datetime.strptime(f"{dropdown_values[0]}-{dropdown_values[1]}-{dropdown_values[2]} {dropdown_values[4]}", "%Y-%m-%d %I:%M %p")
         if start_time > end_time:
             return False
         return True
@@ -69,7 +69,7 @@ class EventApp:
         """This function is called when the user clicks the "SEARCH" button"""
         self.retrieve_event_tab.clear_event_list()
         dropdpwn_values = self.retrieve_event_tab.get_dropdown_values()
-        query = "SELECT * FROM appointments WHERE "
+        query = "SELECT * FROM events WHERE "
         events = self.db_handler.find_event(query, *dropdpwn_values)
 
         if not events:
@@ -83,7 +83,7 @@ class EventApp:
         """This function is called when the user clicks the "SEARCH" button in the delete tab"""
         self.delete_event_tab.clear_event_list()
         dropdpwn_values = self.delete_event_tab.get_dropdown_values()
-        query = "SELECT * FROM appointments WHERE "
+        query = "SELECT * FROM events WHERE "
         events = self.db_handler.find_event(query, *dropdpwn_values)
 
         if not events:
@@ -113,10 +113,16 @@ class EventApp:
         """This function is called when the user clicks the "DELETE" button"""
         self.delete_event_tab.clear_event_list()
         dropdpwn_values = self.delete_event_tab.get_dropdown_values()
-        query = "SELECT id FROM appointments WHERE "
+        query = "SELECT id FROM events WHERE "
         events = self.db_handler.find_event(query, *dropdpwn_values)
         self.tk_message_box.showinfo("Confirm", "Delete will remove all the events from the search result. Are you sure you want to delete?")
         self.db_handler.delete_event(events)
+        self.delete_event_tab.clear_event_list()
+    
+    def on_click_delete_all(self):
+        """This function is called when the user clicks the "DELETE ALL" button"""
+        self.tk_message_box.showinfo("Confirm", "Delete will remove all the events. Are you sure you want to delete?")
+        self.db_handler.clear_all_events()
         self.delete_event_tab.clear_event_list()
 
     def _create_navigation_tabs(self):

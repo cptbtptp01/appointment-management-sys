@@ -41,4 +41,4 @@ The application uses a SQLite database to store appointments. When the applicati
 # Usage (Executable)
 - **Download the executable**: link to be added
 - **Run the application**: `EasyScheduler.exe`
-- **Database**: The database is located in the same directory as the executable, named `events.db`.
+- **Database**: The database is located in the same directory as the executable, named `scheduler.db`.

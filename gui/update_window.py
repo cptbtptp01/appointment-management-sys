@@ -45,7 +45,7 @@ class UpdateEventWindow():
 
     def get_event_id(self) -> str:
         """returns the event id entered by the user"""
-        return self.event_id.get()
+        return self.event_id.get_text()
     
     def close_window(self):
         self.root.destroy()
